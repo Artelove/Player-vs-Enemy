@@ -142,10 +142,10 @@ MonoBehaviour:
   _layerMask:
     serializedVersion: 2
     m_Bits: 1
-  _moveSpeed: 5
-  _jumpForce: 5
+  _moveSpeed: 6
+  _jumpForce: 20
   _minGroundNormalY: 0.65
-  _gravityModifier: 1
+  _gravityModifier: 3
 --- !u!114 &2975626021746004881
 MonoBehaviour:
   m_ObjectHideFlags: 0
