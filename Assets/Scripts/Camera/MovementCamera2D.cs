@@ -43,7 +43,7 @@ public class MovementCamera2D : MonoBehaviour
 {
     [SerializeField] private List<GameObject> _objects;
     [SerializeField] private List<MovementCameraTrigger> _movementTriggers;
-    [SerializeField] private Vector2 _minDistanceBetweenObjectsToNeedMove;
+    [SerializeField] private Vector2 _minDistanceBetweenObjectsForCameraMove;
     [SerializeField] private float _minCameraSize;
     [SerializeField] private float _changeTimeDuration;
     [SerializeField] private float _intervalCameraChangeTime;
@@ -106,9 +106,9 @@ public class MovementCamera2D : MonoBehaviour
         DeleteNullableObjects(_objects); 
         SetDistanseAndCenterPoint(_objects);
 
-        float xSize = _maxDistadistantBetweenObjects.x - _minDistanceBetweenObjectsToNeedMove.x;
+        float xSize = _maxDistadistantBetweenObjects.x - _minDistanceBetweenObjectsForCameraMove.x;
         xSize = xSize > 0 ? xSize : 0;
-        float ySize = _maxDistadistantBetweenObjects.y - _minDistanceBetweenObjectsToNeedMove.y;
+        float ySize = _maxDistadistantBetweenObjects.y - _minDistanceBetweenObjectsForCameraMove.y;
         ySize = ySize > 0 ? ySize : 0;
         _currentAddtitionalSize = new Vector2(xSize, ySize);
         while (changeTime < changeTimeDuration)

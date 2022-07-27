@@ -17,28 +17,25 @@ public class MovementCameraTrigger : MonoBehaviour
         remove => _movementCameraTriggered.RemoveListener(value);
     }
     private enum TriggerType { onExit, onEnter, onStay};
-    private MovementCamera2D _movementCamera;
     // Start is called before the first frame update
     void Start()
     {
-        var collider = GetComponent<BoxCollider2D>();
         _triggerSize = new Vector2 (transform.localScale.x, transform.localScale.y);
-        _movementCamera = GetComponentInParent<MovementCamera2D>();
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (triggerType == TriggerType.onEnter)
+        if (triggerType == TriggerType.onEnter && collision.TryGetComponent<PhisicsMovement>(out PhisicsMovement phisicsMovement))
             _movementCameraTriggered.Invoke();
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (triggerType == TriggerType.onExit)
+        if (triggerType == TriggerType.onExit && collision.TryGetComponent<PhisicsMovement>(out PhisicsMovement phisicsMovement))
             _movementCameraTriggered.Invoke();
     }
 
     private void OnTriggerStay2D (Collider2D collision)
     {
-        if (triggerType == TriggerType.onStay)
+        if (triggerType == TriggerType.onStay && collision.TryGetComponent<PhisicsMovement>(out PhisicsMovement phisicsMovement))
             _movementCameraTriggered.Invoke();
     }
 }
