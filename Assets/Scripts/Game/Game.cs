@@ -5,47 +5,56 @@ using UnityEngine.Events;
 
 public class Game : MonoBehaviour
 {
+    private Player _player;
+    private Enemy _enemy;
     private Door _exitDoor;
-
-    private UnityEvent<GameObject> _levelFinished = new UnityEvent<GameObject>();
-
-    public event UnityAction<GameObject> LevelFinished
+    private Spike[] _spikes;
+    private void Awake()
     {
-        add => _levelFinished.AddListener(value);
-        remove => _levelFinished.RemoveListener(value);
+        _player = GetComponentInChildren<Player>();
+        _enemy = GetComponentInChildren<Enemy>();
+        _exitDoor = GetComponentInChildren<Door>();
+
+        _spikes = GetComponentsInChildren<Spike>();
     }
     private void OnEnable()
     {
-        _exitDoor = GetComponentInChildren<Door>();
+        _player.ObjectDestroyed += LoseLevel;
         _exitDoor.ReachedDoor += EnterDoor;
-        foreach (var item in GetComponentsInChildren<Spike>())
+        foreach (var spike in _spikes)
         {
-            item.SpikesTouched += TakeSpikesHit;
+            spike.SpikesTouched += TakeSpikesHit;
         }
     }
     private void OnDisable()
     {
-        _exitDoor = GetComponentInChildren<Door>();
+        _player.ObjectDestroyed -= LoseLevel;
         _exitDoor.ReachedDoor -= EnterDoor;
-        foreach (var item in GetComponentsInChildren<Spike>())
+        foreach (var spike in _spikes)
         {
-            item.SpikesTouched -= TakeSpikesHit;
+            spike.SpikesTouched += TakeSpikesHit;
         }
     }
-
     private void EnterDoor(GameObject gameObject)
     {
         if (gameObject.TryGetComponent<Enemy>(out Enemy enemy))
-            Debug.Log("Win");
+            LoseLevel();
         if (gameObject.TryGetComponent<Player>(out Player player))
-            Debug.Log("Win");
+            WinLevel();
     }
 
     private void TakeSpikesHit(GameObject gameObject)
     {
-        if (gameObject.TryGetComponent<Enemy>(out Enemy enemy))
-            Debug.Log("Lose");
-        if (gameObject.TryGetComponent<Player>(out Player player))
-            Debug.Log("Win");
+        Destroy(gameObject);
+    }
+
+    private void LoseLevel()
+    {
+        Application.LoadLevel(Application.loadedLevelName);
+    }
+
+    private void WinLevel()
+    {
+        Debug.Log("Win");
     }
 }

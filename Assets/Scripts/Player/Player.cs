@@ -1,18 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Player : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    private UnityEvent _objectDestroyed = new UnityEvent();
 
-    // Update is called once per frame
-    void Update()
+    public event UnityAction ObjectDestroyed
     {
-        
+        add => _objectDestroyed.AddListener(value);
+        remove => _objectDestroyed.RemoveListener(value);
+    }
+    private void OnDestroy()
+    {
+        _objectDestroyed.Invoke();
     }
 }
