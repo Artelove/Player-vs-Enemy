@@ -41,31 +41,26 @@ public class ScreenCharacteristics
 [RequireComponent(typeof(Camera))]
 public class MovementCamera2D : MonoBehaviour
 {
-    [SerializeField] private List<GameObject> _objects;
-    [SerializeField] private List<MovementCameraTrigger> _movementTriggers;
+    [SerializeField] private List<GameObject> _observedObjects;
     [SerializeField] private Vector2 _minDistanceBetweenObjectsForCameraMove;
-    [SerializeField] private float _minCameraSize;
-    [SerializeField] private float _changeTimeDuration;
-    [SerializeField] private float _intervalCameraChangeTime;
-    [SerializeField] private float _screenAcpectWidth;
-    [SerializeField] private float _screenAcpectHeight;
+    [SerializeField] private float _changeEpsilon = 0.1f;
+    [SerializeField] private float _minCameraSize = 7f;
+    [SerializeField] private float _maxCameraSize = 10f;
+    [SerializeField] private float _screenAcpectWidth = 16f;
+    [SerializeField] private float _screenAcpectHeight = 9f;
 
 
     private Camera _camera;
     private ScreenCharacteristics _screen;
 
     private Vector2 _maxDistadistantBetweenObjects;
-
     private Vector2 _currentAddtitionalSize;
     private Vector2 _ñurrentCenterPosition;
     private Vector2 _previousAddtitionalSize;
     private Vector2 _previousCenterPosition;
 
-    private bool _isCameraChanging;
-
     private void Awake()
     {
-        _isCameraChanging = false;
 
         _camera = GetComponent<Camera>();
         _camera.orthographicSize = _minCameraSize;
@@ -73,66 +68,42 @@ public class MovementCamera2D : MonoBehaviour
 
         _previousAddtitionalSize = new Vector2();
         _previousCenterPosition = new Vector2();
-
-        foreach (var trigger in _movementTriggers)
-        {
-            trigger.MovementCameraTriggered += StartChangeCharacteristics;
-        }
-
-        StartCoroutine(IntervalCameraChange(_intervalCameraChangeTime));
-    }
-    
-    private IEnumerator IntervalCameraChange(float intervalCameraChangeTime)
-    {
-        var wait = new WaitForSeconds(intervalCameraChangeTime);
-        while (true)
-        {
-            yield return wait;
-            StartChangeCharacteristics();
-        }
-    }
-    private void StartChangeCharacteristics()
-    {
-        if (!_isCameraChanging)
-        {
-            _isCameraChanging=true;
-            StartCoroutine(ChangeCameraCharacteristics(_changeTimeDuration));
-        }
     }
 
-    private IEnumerator ChangeCameraCharacteristics(float changeTimeDuration)
+    private void Update()
     {
-        float changeTime = 0;
-        DeleteNullableObjects(_objects); 
-        SetDistanseAndCenterPoint(_objects);
+        ChangeCameraCharacteristics();
+    }
+    private void ChangeCameraCharacteristics()
+    {
+        DeleteNullableObjects(_observedObjects); 
+        SetDistanseAndCenterPoint(_observedObjects);
 
         float xSize = _maxDistadistantBetweenObjects.x - _minDistanceBetweenObjectsForCameraMove.x;
         xSize = xSize > 0 ? xSize : 0;
         float ySize = _maxDistadistantBetweenObjects.y - _minDistanceBetweenObjectsForCameraMove.y;
         ySize = ySize > 0 ? ySize : 0;
         _currentAddtitionalSize = new Vector2(xSize, ySize);
-        while (changeTime < changeTimeDuration)
+        if ((_previousAddtitionalSize - _currentAddtitionalSize).magnitude > _changeEpsilon ||
+            (_previousCenterPosition - _ñurrentCenterPosition).magnitude > _changeEpsilon)
         {
-            float coefficient = changeTime / changeTimeDuration;
-            MoveCamera(_previousCenterPosition, _ñurrentCenterPosition, coefficient);
-            ResizeCamera(_previousAddtitionalSize, _currentAddtitionalSize, coefficient);
-            changeTime += Time.deltaTime;
-            yield return null;
+            MoveCamera(_previousCenterPosition, _ñurrentCenterPosition, 1);
+            ResizeCamera(_previousAddtitionalSize, _currentAddtitionalSize, 1);
+
         }
         _previousCenterPosition = _ñurrentCenterPosition;
         _previousAddtitionalSize = _currentAddtitionalSize;
-        _isCameraChanging = false;
     }
 
-    private void DeleteNullableObjects(List<GameObject> _objects)
+    private void DeleteNullableObjects(List<GameObject> observedObjects)
     {
         List<GameObject> needToRemove = new List<GameObject>();
-        foreach (var obj in _objects)
+        foreach (var obj in observedObjects)
             if (obj == null)
                 needToRemove.Add(obj);
 
         foreach (var obj in needToRemove)
-            _objects.Remove(obj);
+            observedObjects.Remove(obj);
     }
     private void SetDistanseAndCenterPoint(IEnumerable<GameObject> _objects)
     {
@@ -172,8 +143,7 @@ public class MovementCamera2D : MonoBehaviour
             ? additionalSize.x * (_screen.AspectRatio / 2.5f) 
             : additionalSize.y * (_screen.AspectRatio / 2.5f);
         //Need to found formule depends screenAspectRatio...
-        _camera.orthographicSize = _minCameraSize + addSize;
-        _camera.transform.localScale = new Vector3(1f + addSize / _minCameraSize, 1f + addSize / _minCameraSize, 1);
+        _camera.orthographicSize = Mathf.Clamp(_minCameraSize + addSize, _minCameraSize, _maxCameraSize);
     }
 
 }

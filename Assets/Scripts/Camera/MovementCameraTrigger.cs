@@ -1,11 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
 public class MovementCameraTrigger : MonoBehaviour
 {
-    [SerializeField] private TriggerType triggerType;
+    [SerializeField] private object _triggerComponent;
+    [SerializeField] private TriggerType _triggerType;
 
     private Vector2 _triggerSize;
     public Vector2 TriggerSize { get => _triggerSize; }
@@ -17,6 +16,8 @@ public class MovementCameraTrigger : MonoBehaviour
         remove => _movementCameraTriggered.RemoveListener(value);
     }
     private enum TriggerType { onExit, onEnter, onStay};
+
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -24,18 +25,18 @@ public class MovementCameraTrigger : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (triggerType == TriggerType.onEnter && collision.TryGetComponent<PhisicsMovement>(out PhisicsMovement phisicsMovement))
+        if (_triggerType == TriggerType.onEnter && collision.TryGetComponent<PhisicsMovement>(out PhisicsMovement phisicsMovement))
             _movementCameraTriggered.Invoke();
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (triggerType == TriggerType.onExit && collision.TryGetComponent<PhisicsMovement>(out PhisicsMovement phisicsMovement))
+        if (_triggerType == TriggerType.onExit && collision.TryGetComponent<PhisicsMovement>(out PhisicsMovement phisicsMovement))
             _movementCameraTriggered.Invoke();
     }
 
     private void OnTriggerStay2D (Collider2D collision)
     {
-        if (triggerType == TriggerType.onStay && collision.TryGetComponent<PhisicsMovement>(out PhisicsMovement phisicsMovement))
+        if (_triggerType == TriggerType.onStay && collision.TryGetComponent<PhisicsMovement>(out PhisicsMovement phisicsMovement))
             _movementCameraTriggered.Invoke();
     }
 }
