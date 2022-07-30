@@ -95,14 +95,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _observedObjects: []
-  _movementTriggers:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  _minDistanceBetweenObjectsForCameraMove: {x: 0, y: 0}
-  _minCameraSize: 10
-  _maxCameraSize: 0
+  _minDistanceBetweenObjectsForCameraMove: {x: 15, y: 5}
+  _changeEpsilon: 0.02
+  _minCameraSize: 7
+  _maxCameraSize: 15
   _screenAcpectWidth: 16
   _screenAcpectHeight: 9
 --- !u!81 &9043730185682425129
