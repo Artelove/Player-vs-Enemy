@@ -9,6 +9,8 @@ public class Game : MonoBehaviour
     private Enemy _enemy;
     private Door _exitDoor;
     private Spike[] _spikes;
+    private PressButton[] _pressButtons;
+    private Gate[] _gates;
     private void Awake()
     {
         _player = GetComponentInChildren<Player>();
@@ -16,14 +18,20 @@ public class Game : MonoBehaviour
         _exitDoor = GetComponentInChildren<Door>();
 
         _spikes = GetComponentsInChildren<Spike>();
+        _pressButtons = GetComponentsInChildren<PressButton>();
+        _gates = GetComponentsInChildren<Gate>();
     }
     private void OnEnable()
     {
         _player.ObjectDestroyed += LoseLevel;
         _exitDoor.ReachedDoor += EnterDoor;
         foreach (var spike in _spikes)
+            spike.SpikesTouched += InflictSpikesHit;
+
+        foreach (var pressButton in _pressButtons)
         {
-            spike.SpikesTouched += TakeSpikesHit;
+            pressButton.ButtonPressed += LowerGate;
+            pressButton.ButtonUnPressed += RaiseGate;
         }
     }
     private void OnDisable()
@@ -31,9 +39,7 @@ public class Game : MonoBehaviour
         _player.ObjectDestroyed -= LoseLevel;
         _exitDoor.ReachedDoor -= EnterDoor;
         foreach (var spike in _spikes)
-        {
-            spike.SpikesTouched += TakeSpikesHit;
-        }
+            spike.SpikesTouched += InflictSpikesHit;
     }
     private void EnterDoor(GameObject gameObject)
     {
@@ -42,8 +48,23 @@ public class Game : MonoBehaviour
         if (gameObject.TryGetComponent<Player>(out Player player))
             WinLevel();
     }
-
-    private void TakeSpikesHit(GameObject gameObject)
+    private void LowerGate(int id)
+    {
+        foreach (var gate in _gates)
+        {
+            if (gate.ButtonTriggerId == id)
+                gate.LowerGate();
+        }
+    }
+    private void RaiseGate(int id)
+    {
+        foreach (var gate in _gates)
+        {
+            if (gate.ButtonTriggerId == id)
+                gate.RaiseGate();
+        }
+    }
+    private void InflictSpikesHit(GameObject gameObject)
     {
         Destroy(gameObject);
     }
