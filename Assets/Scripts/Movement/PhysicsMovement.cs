@@ -1,15 +1,15 @@
 
 using System.Collections.Generic;
+using Movement;
 using UnityEngine;
 
-public class PhisicsMovement : MonoBehaviour
+public class PhysicsMovement
 {
-    [SerializeField] private LayerMask _layerMask;
-    [SerializeField] protected float _moveSpeed;
-    [SerializeField] protected float _jumpForce;
-    [SerializeField] private float _minGroundNormalY = .65f;
-    [SerializeField] private float _gravityModifier = 1f;
-
+    private LayerMask _layerMask;
+    protected float _moveSpeed;
+    protected float _jumpForce;
+    private float _minGroundNormalY = .65f;
+    private float _gravityModifier = 1f;
 
     private Vector2 _velocity;
     private Vector2 _targetVelocity; 
@@ -26,36 +26,38 @@ public class PhisicsMovement : MonoBehaviour
 
     public Vector2 TargetVelocity { get => _targetVelocity; set => _targetVelocity = value; }
 
-    void OnEnable() {
-        rb2d = GetComponent<Rigidbody2D>();
-    }
-    void Start() {
+    public PhysicsMovement(UnitPhysicsConfig unitPhysicsConfig, Rigidbody2D rigidbody2D)
+    {
+        _layerMask = unitPhysicsConfig.LayerMask;
+        _moveSpeed = unitPhysicsConfig.MoveSpeed;
+        _jumpForce = unitPhysicsConfig.JumpForse;
+        _minGroundNormalY = unitPhysicsConfig.MinGroundNormalY;
+        _gravityModifier = unitPhysicsConfig.GravityModifier;
+        rb2d = rigidbody2D;
         contactFilter.useTriggers = false;
         contactFilter.SetLayerMask(_layerMask);
         contactFilter.useLayerMask = true;
     }
-    void Update()
+    public void Movement(PhysicsInput input, float time)
     {
-        TargetVelocity = new Vector2(Input.GetAxis("Horizontal") * _moveSpeed, 0);
-        if (Input.GetAxis("Vertical") > 0 && grounded)
+        TargetVelocity = new Vector2(input.HorizontalAxis * _moveSpeed, 0);
+        if(input.VerticalAxis > 0 && grounded)
             _velocity.y = _jumpForce;
-    }
-    void FixedUpdate()
-    {
-        _velocity += _gravityModifier * Physics2D.gravity * Time.deltaTime; 
+        
+        _velocity += Physics2D.gravity * (_gravityModifier * time); 
         _velocity.x = TargetVelocity.x;
 
         grounded = false;
 
-        Vector2 deltaPosition = _velocity * Time.deltaTime; 
+        Vector2 deltaPosition = _velocity * time; 
         Vector2 moveAlongGround = new Vector2(groundNormal.y, -groundNormal.x); 
         Vector2 move = moveAlongGround * deltaPosition.x;
 
-        Movement(move, false);
+        Move(move, false);
         move = Vector2.up * deltaPosition.y;
-        Movement(move, true);
+        Move(move, true);
     }
-    void Movement(Vector2 move, bool yMovement) {
+    private void Move(Vector2 move, bool yMovement) {
         float distance = move.magnitude;
         if (distance > minMoveDistance) 
         {
@@ -89,7 +91,6 @@ public class PhisicsMovement : MonoBehaviour
                 distance = modifiedDistance < distance ? modifiedDistance : distance;
             }
         }
-        rb2d.position = rb2d.position + move.normalized * distance;
-       
+        rb2d.position += move.normalized * distance;
     }
 }

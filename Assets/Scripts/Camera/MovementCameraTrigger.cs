@@ -25,18 +25,18 @@ public class MovementCameraTrigger : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (_triggerType == TriggerType.onEnter && collision.TryGetComponent<PhisicsMovement>(out PhisicsMovement phisicsMovement))
+        if (_triggerType == TriggerType.onEnter && collision.TryGetComponent<PhysicsMovement>(out PhysicsMovement physicsMovement))
             _movementCameraTriggered.Invoke();
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (_triggerType == TriggerType.onExit && collision.TryGetComponent<PhisicsMovement>(out PhisicsMovement phisicsMovement))
+        if (_triggerType == TriggerType.onExit && collision.TryGetComponent<PhysicsMovement>(out PhysicsMovement physicsMovement))
             _movementCameraTriggered.Invoke();
     }
 
     private void OnTriggerStay2D (Collider2D collision)
     {
-        if (_triggerType == TriggerType.onStay && collision.TryGetComponent<PhisicsMovement>(out PhisicsMovement phisicsMovement))
+        if (_triggerType == TriggerType.onStay && collision.TryGetComponent<PhysicsMovement>(out PhysicsMovement physicsMovement))
             _movementCameraTriggered.Invoke();
     }
 }
