@@ -16,6 +16,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   _moveSpeed: 7
-  _jumpForse: 15
+  _jumpForse: 30
   _gravityModifier: 5
   _minGroundNormalY: 0.65
