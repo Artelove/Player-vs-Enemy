@@ -1,13 +1,11 @@
-
 using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class Gate : MonoBehaviour, IActivable, IDeActivable
 {
-    [SerializeField] private List<GameObject> _activators;
-    [SerializeField] private List<GameObject> _deActivators;
+    [SerializeField] private List<GameObject> _activators = null;
+    [SerializeField] private List<GameObject> _deActivators = null;
     [SerializeField] private GameObject gate;
     [SerializeField] private Transform _loweredGatePoint;
     private Transform _raiseGatePoint;

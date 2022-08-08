@@ -15,7 +15,7 @@ MonoBehaviour:
   _layerMask:
     serializedVersion: 2
     m_Bits: 1
-  _moveSpeed: 7
-  _jumpForse: 30
-  _gravityModifier: 5
+  _moveSpeed: 10
+  _jumpForse: 15
+  _gravityModifier: 3
   _minGroundNormalY: 0.65

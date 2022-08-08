@@ -2,20 +2,23 @@
 using Movement;
 using UnityEngine;
 
-public class Unit : MonoBehaviour
+namespace Units
 {
-    protected MovementView MovementView;
-    protected PhysicsModel PhysicsModel;
-    protected PhysicsInput Input;
-    protected void Init(UnitPhysicsConfig unitPhysicsConfig)
+    public class Unit : MonoBehaviour
     {
-        Input = GetComponent<PhysicsInput>();
-        MovementView = GetComponent<MovementView>();
-        Input.HorizintalDirectionChanged += MovementView.ChangeVisual;
-        PhysicsModel = new PhysicsModel(unitPhysicsConfig, GetComponent<Rigidbody2D>(), Input);
-    }
-    private void FixedUpdate()
-    {
-        PhysicsModel.UpdatePosition(Time.deltaTime);
+        protected MovementView MovementView;
+        protected PhysicsModel PhysicsModel;
+        protected PhysicsInput Input;
+        protected void Init(UnitPhysicsConfig unitPhysicsConfig)
+        {
+            Input = GetComponent<PhysicsInput>();
+            MovementView = GetComponent<MovementView>();
+            Input.HorizintalDirectionChanged += MovementView.ChangeVisual;
+            PhysicsModel = new PhysicsModel(unitPhysicsConfig, GetComponent<Rigidbody2D>(), Input);
+        }
+        private void FixedUpdate()
+        {
+            PhysicsModel.UpdatePosition(Time.deltaTime);
+        }
     }
 }

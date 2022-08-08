@@ -18,14 +18,13 @@ public class MovementView : MonoBehaviour
     { 
         _targetObject = transform;
         ChangeVisual += ChangeVisualDirection;
-        ChangeVisualDirection();
     }
 
     public void ChangeVisualDirection()
     {
         moveDirection = moveDirection == Direction.left ? Direction.right : Direction.left;
         _targetObject.rotation =
-            moveDirection == Direction.right ? Quaternion.Euler(0, 0, 0) : Quaternion.Euler(0, 180, 0);
+            moveDirection == Direction.left ? Quaternion.Euler(0, 0, 0) : Quaternion.Euler(0, 180, 0);
     }
 }
 

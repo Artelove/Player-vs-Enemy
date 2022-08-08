@@ -23,16 +23,17 @@ namespace Movement
         }
         public float HorizontalAxis
         {
-            get { return _horizontalAxis; }
-            set
-            {
-                _horizontalAxis = value;
-            }
+            get => _horizontalAxis;
+            private set => _horizontalAxis = value;
         }
 
-        public float VerticalAxis { get; set; }
+        public float VerticalAxis
+        {
+            get => _verticalAxis;
+            private set => _verticalAxis = value;
+        }
 
-        private void Update()
+        private void FixedUpdate()
         {
             HorizontalAxis = Input.GetAxis("Horizontal");
             if (HorizontalAxis > 0)
