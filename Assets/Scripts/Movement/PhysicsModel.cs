@@ -15,7 +15,7 @@ namespace Movement
         
         public void UpdatePosition(float fixedTime)
         {
-            _phisicsMovement.Movement(_input, fixedTime);
+            _phisicsMovement.Movement(_input.HorizontalAxis, _input.VerticalAxis, fixedTime);
         }
     }
 }

@@ -1,6 +1,7 @@
 
 using System.Collections.Generic;
 using Movement;
+using Units;
 using UnityEngine;
 
 public class PhysicsMovement
@@ -38,10 +39,10 @@ public class PhysicsMovement
         contactFilter.SetLayerMask(_layerMask);
         contactFilter.useLayerMask = true;
     }
-    public void Movement(PhysicsInput input, float time)
+    public void Movement(float horizontalAxis, float verticalAxis, float time)
     {
-        TargetVelocity = new Vector2(input.HorizontalAxis * _moveSpeed, 0);
-        if(input.VerticalAxis > 0 && grounded)
+        TargetVelocity = new Vector2(horizontalAxis * _moveSpeed, 0);
+        if(verticalAxis > 0 && grounded)
             _velocity.y = _jumpForce;
         
         _velocity += Physics2D.gravity * (_gravityModifier * time); 

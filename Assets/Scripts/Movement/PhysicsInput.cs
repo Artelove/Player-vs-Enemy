@@ -6,41 +6,40 @@ namespace Movement
     public class PhysicsInput: MonoBehaviour
     {
         private MovementView.Direction _currentDirection;
-        public event Action HorizintalDirectionChanged;
+        private MovementView.Direction _startDirection;
 
-        private float _horizontalAxis;
-        private float _verticalAxis;
+        public Action HorizontalDirectionChanged;
 
-        public MovementView.Direction Direction
+        public MovementView.Direction CurrentDirection
         {
             get => _currentDirection;
             set
             {
-                if(_currentDirection != value)
-                    HorizintalDirectionChanged?.Invoke();
+                if(value != CurrentDirection)
+                    HorizontalDirectionChanged?.Invoke();
                 _currentDirection = value;
             }
         }
-        public float HorizontalAxis
-        {
-            get => _horizontalAxis;
-            private set => _horizontalAxis = value;
-        }
+        public float HorizontalAxis{ get; private set; }
 
-        public float VerticalAxis
+        public float VerticalAxis { get; private set; }
+        
+        public void SetStartDirection(MovementView.Direction direction)
         {
-            get => _verticalAxis;
-            private set => _verticalAxis = value;
+            _startDirection = direction;
+            _currentDirection = direction;
         }
-
+        
         private void FixedUpdate()
         {
             HorizontalAxis = Input.GetAxis("Horizontal");
             if (HorizontalAxis > 0)
-                Direction = MovementView.Direction.left;
+                CurrentDirection = _startDirection == MovementView.Direction.Right ? MovementView.Direction.Right : MovementView.Direction.Left;
             else if(HorizontalAxis < 0)
-                Direction = MovementView.Direction.right;
+                CurrentDirection = _startDirection == MovementView.Direction.Right ? MovementView.Direction.Left : MovementView.Direction.Right;
             VerticalAxis = Input.GetAxis("Vertical");
         }
+
+
     }
 }

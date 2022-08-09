@@ -11,9 +11,10 @@ namespace Units
         protected PhysicsInput Input;
         protected void Init(UnitPhysicsConfig unitPhysicsConfig)
         {
-            Input = GetComponent<PhysicsInput>();
             MovementView = GetComponent<MovementView>();
-            Input.HorizintalDirectionChanged += MovementView.ChangeVisual;
+            Input = GetComponent<PhysicsInput>();
+            Input.SetStartDirection(MovementView.MoveDirection);
+            Input.HorizontalDirectionChanged += MovementView.ChangeVisual;
             PhysicsModel = new PhysicsModel(unitPhysicsConfig, GetComponent<Rigidbody2D>(), Input);
         }
         private void FixedUpdate()
