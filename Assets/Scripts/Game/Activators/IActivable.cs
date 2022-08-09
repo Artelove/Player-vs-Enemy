@@ -1,5 +1,7 @@
-﻿public interface IActivable
+﻿using System;
+
+public interface IActivable
 {
-    abstract void SetActivator(IActivator activator); 
-    abstract void RemoveActivator(IActivator activator);
+    void SetActivator(IActivator activator);
+    void RemoveActivator(IActivator activator);
 }

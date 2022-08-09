@@ -2,16 +2,17 @@ using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class SceneController: MonoBehaviour
+public class SceneController
 {
     private Scene _currentScene; 
-    public void RestartLevel(Scene scene)
+    public void RestartLevel(int currentIndex)
     {
-        SceneManager.LoadScene(scene.name);
+        SceneManager.LoadScene(currentIndex);
     }
 
-    public void NextLevel(Scene scene)
+    public void NextLevel(int currentIndex)
     {
-        Debug.Log("Win");
+        if(currentIndex+1==7) return;
+        SceneManager.LoadScene(currentIndex+1);
     }
 }

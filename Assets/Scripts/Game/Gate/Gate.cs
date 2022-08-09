@@ -8,6 +8,7 @@ public class Gate : MonoBehaviour, IActivable, IDeActivable
     [SerializeField] private List<GameObject> _deActivators = null;
     [SerializeField] private GameObject gate;
     [SerializeField] private Transform _loweredGatePoint;
+    [SerializeField] private float _changePositionDuration = 1.0f;
     private Transform _raiseGatePoint;
     
     private void Start()
@@ -22,11 +23,11 @@ public class Gate : MonoBehaviour, IActivable, IDeActivable
     }
     public void RaiseGate()
     {
-        gate.transform.DOMove(_raiseGatePoint.position, 1);
+        gate.transform.DOMove(_raiseGatePoint.position, _changePositionDuration);
     }
     public void LowerGate()
     {
-        gate.transform.DOMove(_loweredGatePoint.position, 1);
+        gate.transform.DOMove(_loweredGatePoint.position, _changePositionDuration);
     }
 
     public void SetActivator(IActivator activator)

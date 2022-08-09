@@ -10,7 +10,7 @@ public class LevelController : MonoBehaviour
 {
     [SerializeField] private Player _player;
     [SerializeField] private Enemy _enemy;
-    [SerializeField] private List<Spike> _spikes;
+    [SerializeField] private GameObject _spikesContaiter;
     [SerializeField] private List<Door> _doors;
 
     public event Action LevelDone;
@@ -18,18 +18,20 @@ public class LevelController : MonoBehaviour
     private void OnEnable()
     {
         _player.Destroyed += LoseLevel;
+        _enemy.PlayerTounched += InflictEnemyHit;
         foreach (var door in _doors)
             door.ReachedDoor += EnterDoor;
-        foreach (var spike in _spikes)
+        foreach (var spike in _spikesContaiter.GetComponentsInChildren<Spike>())
             spike.SpikesTouched += InflictSpikesHit;
     }
     private void OnDisable()
     {
         _player.Destroyed -= LoseLevel;
+        _enemy.PlayerTounched -= InflictEnemyHit;
         foreach (var door in _doors)
             door.ReachedDoor -= EnterDoor;
-        foreach (var spike in _spikes)
-            spike.SpikesTouched += InflictSpikesHit;
+        foreach (var spike in _spikesContaiter.GetComponentsInChildren<Spike>())
+            spike.SpikesTouched -= InflictSpikesHit;
     }
 
     private void EnterDoor(Unit unit)
@@ -43,6 +45,11 @@ public class LevelController : MonoBehaviour
     private void InflictSpikesHit(Unit unit)
     {
         Destroy(unit.gameObject);
+    }
+
+    private void InflictEnemyHit()
+    {
+        Destroy(_player);
     }
 
     private void LoseLevel()

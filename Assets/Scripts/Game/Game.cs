@@ -3,7 +3,7 @@ using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-[RequireComponent(typeof(LevelController),typeof(SceneController))]
+[RequireComponent(typeof(LevelController))]
 public class Game : MonoBehaviour
 {
     private LevelController _levelController;
@@ -11,7 +11,7 @@ public class Game : MonoBehaviour
     private void Awake()
     {
         _levelController = GetComponent<LevelController>();
-        _sceneController = GetComponent<SceneController>();
+        _sceneController = new SceneController();
     }
 
     private void OnEnable()
@@ -22,11 +22,11 @@ public class Game : MonoBehaviour
 
     private void LosedLevel()
     {
-        _sceneController.RestartLevel(SceneManager.GetActiveScene());
+        _sceneController.RestartLevel(SceneManager.GetActiveScene().buildIndex);
     }
 
     private void WinLevel()
     {
-        _sceneController.NextLevel(SceneManager.GetActiveScene());
+        _sceneController.NextLevel(SceneManager.GetActiveScene().buildIndex);
     }
 }
