@@ -3,8 +3,10 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class SceneController:MonoBehaviour
+[System.Serializable]
+public class SceneController
 {
+    [SerializeField] private SceneAsset _nextScene;
     private Scene _currentScene;
 
     public Scene CurrentScene
@@ -12,9 +14,7 @@ public class SceneController:MonoBehaviour
         get => _currentScene;
         set => _currentScene = value;
     }
-
-    [SerializeField] private SceneAsset _nextScene;
-
+    
     public void Awake()
     {
         CurrentScene = SceneManager.GetActiveScene();
