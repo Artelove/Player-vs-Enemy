@@ -1,18 +1,33 @@
 using System;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class SceneController
+public class SceneController:MonoBehaviour
 {
-    private Scene _currentScene; 
-    public void RestartLevel(int currentIndex)
+    private Scene _currentScene;
+
+    public Scene CurrentScene
     {
-        SceneManager.LoadScene(currentIndex);
+        get => _currentScene;
+        set => _currentScene = value;
     }
 
-    public void NextLevel(int currentIndex)
+    [SerializeField] private SceneAsset _nextScene;
+
+    public void Awake()
     {
-        if(currentIndex+1==7) return;
-        SceneManager.LoadScene(currentIndex+1);
+        CurrentScene = SceneManager.GetActiveScene();
+    }
+
+    public void RestartLevel()
+    {
+        SceneManager.LoadSceneAsync(_currentScene.name);
+    }
+
+    public void NextLevel()
+    {
+        if(_nextScene!=null)
+            SceneManager.LoadSceneAsync(_nextScene.name);
     }
 }
