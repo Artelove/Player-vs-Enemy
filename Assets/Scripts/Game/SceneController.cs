@@ -7,18 +7,15 @@ using UnityEngine.SceneManagement;
 public class SceneController
 {
     [SerializeField] private SceneAsset _nextScene;
+    [SerializeField] private SceneAsset _levelMenu;
     private Scene _currentScene;
-
+    
     public Scene CurrentScene
     {
         get => _currentScene;
         set => _currentScene = value;
     }
     
-    public void Awake()
-    {
-        CurrentScene = SceneManager.GetActiveScene();
-    }
 
     public void RestartLevel()
     {
@@ -29,5 +26,10 @@ public class SceneController
     {
         if(_nextScene!=null)
             SceneManager.LoadSceneAsync(_nextScene.name);
+    }
+
+    public void LoadLevelMenu()
+    {
+        SceneManager.LoadSceneAsync(_levelMenu.name);
     }
 }
