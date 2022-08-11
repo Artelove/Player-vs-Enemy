@@ -15,7 +15,7 @@ namespace Save
                 if (AttemptsToWin == null)
                 {
                     AttemptsToWin = new List<int>();
-                    AttemptsToWin.Add(1);
+                    AttemptsToWin.Add(0);
                 }
 
                 return AttemptsToWin[^1];
