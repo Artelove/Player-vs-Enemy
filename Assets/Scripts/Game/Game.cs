@@ -12,7 +12,7 @@ public class Game : MonoBehaviour
     private LevelController _levelController;
     private LevelSaveSystem _levelSaveSystem;
     private LevelSaveData _levelSaveData;
-    
+
     private void Awake()
     {
         _levelController = GetComponent<LevelController>();
@@ -37,19 +37,22 @@ public class Game : MonoBehaviour
     private void Lose()
     {
         _levelSaveData.AttemptsToWin[^1]++;
+        _endLevelUI.Model.SetLevelData(_levelSaveData);
         EndLevel();
     }
 
     private void Win()
     {
         _levelSaveData.IsLevelDone = true;
+        _endLevelUI.Model.SetLevelData(_levelSaveData);
+        _levelSaveData.AttemptsToWin.Add(0);
         EndLevel();
     }
 
     private void EndLevel()
     {
+        
         _levelSaveSystem.Save(_levelSaveData);
-        _endLevelUI.Model.SetLevelData(_levelSaveData);
         _endLevelUI.Show();
     }
 }

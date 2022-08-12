@@ -7,18 +7,17 @@ namespace Save
         public string Name;
         public List<int> AttemptsToWin;
         public bool IsLevelDone;
+        private int _lastAttemptCount;
 
-        public int LastAttemptCount
+        public int LastAttemptCount => AttemptsToWin[^1];
+
+        public int LastWinAttemptCount
         {
-            get
-            {
-                if (AttemptsToWin == null)
-                {
-                    AttemptsToWin = new List<int>();
-                    AttemptsToWin.Add(0);
-                }
-
-                return AttemptsToWin[^1];
+            get { 
+                if(AttemptsToWin.Count>=2)
+                        return AttemptsToWin[^2];
+                else
+                    return 0;
             }
         }
 
@@ -26,6 +25,12 @@ namespace Save
         {
             Name = name;
             AttemptsToWin = attemptsToWin;
+            if (attemptsToWin == null)
+            {
+                AttemptsToWin = new List<int>();
+                AttemptsToWin.Add(0);
+            }
+
             IsLevelDone = isLevelDone;
         }
     }

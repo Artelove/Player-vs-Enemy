@@ -35,7 +35,7 @@ public class EndLevelUIView
     public void Show()
     {
         _canvasGroup.gameObject.SetActive(true);
-        _canvasGroup.DOFade(1, 1);
+        _canvasGroup.DOFade(1, 1).SetDelay(0.2f);
     }
 
     public void Hide()

@@ -22,7 +22,7 @@ public class EndLeveUIModel
 
     public void SetLevelData(LevelSaveData data)
     {
-        _attempts = data.AttemptsToWin[^1];
+        _attempts = data.LastAttemptCount;
         _isLevelDone = data.IsLevelDone;
     }
 }
