@@ -1,2 +1,2 @@
 # Player-vs-Enemy
-Gameplay link: [![Gameplay](https://youtu.be/tbepjMiSx-I)]
+Gameplay link: https://youtu.be/tbepjMiSx-I
