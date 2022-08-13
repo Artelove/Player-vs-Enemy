@@ -1,3 +1,2 @@
 # Player-vs-Enemy
-Gameplay link: https://youtu.be/tbepjMiSx-I
-<iframe width="560" height="315" src="https://www.youtube.com/embed/tbepjMiSx-I" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+Gameplay link: [![Watch the video](https://i.imgur.com/vKb2F1B.png)]https://youtu.be/tbepjMiSx-I
